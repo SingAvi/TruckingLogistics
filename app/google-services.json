@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "290109564833",
+    "firebase_url": "https://truckinglogistics-12fa4.firebaseio.com",
+    "project_id": "truckinglogistics-12fa4",
+    "storage_bucket": "truckinglogistics-12fa4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290109564833:android:bd5ced7d264f351a0b0de0",
+        "android_client_info": {
+          "package_name": "singavi.truckinglogistics.in"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290109564833-dbtq8lfilje2tnf4e96aukba5norcr9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzB75re3bW6Dgn48UFkXOYAC7EcYWeQuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290109564833-dbtq8lfilje2tnf4e96aukba5norcr9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

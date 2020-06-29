@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OTPcheck">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_phone"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Phone Number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/verify_button"
+        android:text="Ask OTP"
+        android:background="#FFBF00"
+        android:layout_below="@+id/input_layout_phone"
+        android:gravity="center"
+        android:layout_centerInParent="true"/>
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/typed_otp"
+        android:hint="OTP"
+        android:paddingLeft="28dp"
+        android:paddingRight="28dp"
+        android:inputType="number"
+        android:layout_centerInParent="true"
+        android:layout_margin="22dp"
+        android:layout_below="@id/verify_button"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set A Pin :"
+        android:textSize="16dp"
+        android:id="@+id/setpin_tv"
+        android:layout_below="@+id/typed_otp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pinLayout"
+        android:orientation="vertical"
+        android:layout_below="@+id/setpin_tv"
+        android:layout_margin="16dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/app_pin_1"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="4dp"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/pin1"
+            android:inputType="number
+"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Num Pass" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/app_pin_2"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="4dp"
+        android:layout_below="@+id/app_pin_1"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/pin2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Num Pass" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login"
+        android:layout_marginLeft="48dp"
+        android:text="Validate Login"
+        android:background="#FFBF00"
+        android:layout_below="@+id/pinLayout"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="36dp"/>
+
+
+
+</RelativeLayout>
