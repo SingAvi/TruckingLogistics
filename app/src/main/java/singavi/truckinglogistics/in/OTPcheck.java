@@ -20,7 +20,12 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class OTPcheck extends AppCompatActivity {
@@ -28,7 +33,9 @@ public class OTPcheck extends AppCompatActivity {
 
     //Firebase Declarations
     FirebaseAuth firebaseAuth;
-    
+    DatabaseReference databaseReference;
+
+
 
     //Code Variables
     boolean verified = false;
@@ -69,6 +76,7 @@ public class OTPcheck extends AppCompatActivity {
                 String phoneNumber = editTextphonenumber.getText().toString();
                 if (phoneNumber.equals("") || phoneNumber.length() != 10)
                 {
+
                     Toast.makeText(OTPcheck.this, "Enter Valid Phone Number", Toast.LENGTH_SHORT).show();
                     editTextphonenumber.requestFocus();
 
@@ -94,7 +102,7 @@ public class OTPcheck extends AppCompatActivity {
                 }
                 else
 
-                    Toast.makeText(OTPcheck.this, "First Verfiy", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OTPcheck.this, "First Ask OTP", Toast.LENGTH_SHORT).show();
 
 
             }
@@ -110,8 +118,14 @@ public class OTPcheck extends AppCompatActivity {
     private void verifyLogin(String otpTyped) {
 
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpSent,otpTyped);
-        signInWithPhoneAuthCredential(credential);
 
+        if (otpSent.equals(otpTyped))
+
+            signInWithPhoneAuthCredential(credential);
+
+        else
+
+            Toast.makeText(this, "Check Otp", Toast.LENGTH_SHORT).show();
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
@@ -122,19 +136,22 @@ public class OTPcheck extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(OTPcheck.this, "Number Verified", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(OTPcheck.this,MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+
+                            //Also Directs To Main Activity if DataSaved
+                            savePinAndPhoneNumber();
+
                         }
                         else
-                            {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
                                 Toast.makeText(OTPcheck.this, "Invalid Otp", Toast.LENGTH_SHORT).show();
-                            }
+                        }
                         }
                     }
                 );
     }
+
+
 
     private void numberVerify(String phNumber) {
 
@@ -172,4 +189,56 @@ public class OTPcheck extends AppCompatActivity {
 
         }
     };
+    // Saves User Detail in DB (If successful -> Goes to MainActivity and if !successful -> Network Error)
+    private void savePinAndPhoneNumber() {
+
+        String p1 = editTextPin1.getText().toString().trim();
+        String p2 = editTextPin2.getText().toString().trim();
+        String phNumber = editTextphonenumber.getText().toString().trim();
+
+        //Get Date
+        SimpleDateFormat timeStampFormat = new SimpleDateFormat("dd/MM/YYYY");
+        Date myDate = new Date();
+        String currentDate = timeStampFormat.format(myDate);
+        // ....
+
+        if (p1.equals(p2))
+        {
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(phNumber);
+
+            HashMap<String, String> userBase = new HashMap<>();
+
+            userBase.put("Phone Number", phNumber);
+            userBase.put("App Pin",p1);
+            userBase.put("Registeration Date",currentDate);
+
+            databaseReference.setValue(userBase).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    if (task.isSuccessful())
+                    {
+
+                        Intent intent = new Intent(OTPcheck.this,MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+
+                    }
+
+                    else
+                    {
+                        Toast.makeText(OTPcheck.this, "Check Internet Connection", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+
+            });
+
+        }
+        else
+        {
+            Toast.makeText(this, "Different Pin Entered", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
