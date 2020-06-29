@@ -34,6 +34,7 @@ public class OTPcheck extends AppCompatActivity {
     //Firebase Declarations
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
+    String currentDate;
 
 
 
@@ -67,6 +68,12 @@ public class OTPcheck extends AppCompatActivity {
 
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //Get Date
+        SimpleDateFormat timeStampFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date myDate = new Date();
+        String currentDate = timeStampFormat.format(myDate);
+        // ....
 
         // On Click Verfiy Button ( To Recieve OTP )
         verfiy.setOnClickListener(new View.OnClickListener() {
@@ -119,13 +126,11 @@ public class OTPcheck extends AppCompatActivity {
 
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpSent,otpTyped);
 
-        if (otpSent.equals(otpTyped))
 
             signInWithPhoneAuthCredential(credential);
 
-        else
 
-            Toast.makeText(this, "Check Otp", Toast.LENGTH_SHORT).show();
+
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
@@ -196,17 +201,13 @@ public class OTPcheck extends AppCompatActivity {
         String p2 = editTextPin2.getText().toString().trim();
         String phNumber = editTextphonenumber.getText().toString().trim();
 
-        //Get Date
-        SimpleDateFormat timeStampFormat = new SimpleDateFormat("dd/MM/YYYY");
-        Date myDate = new Date();
-        String currentDate = timeStampFormat.format(myDate);
-        // ....
+
 
         if (p1.equals(p2))
         {
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(phNumber);
 
-            HashMap<String, String> userBase = new HashMap<>();
+            HashMap<String , String> userBase = new HashMap<>();
 
             userBase.put("Phone Number", phNumber);
             userBase.put("App Pin",p1);
@@ -218,7 +219,6 @@ public class OTPcheck extends AppCompatActivity {
 
                     if (task.isSuccessful())
                     {
-
                         Intent intent = new Intent(OTPcheck.this,MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
